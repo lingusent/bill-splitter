@@ -1,0 +1,19 @@
+/*
+This is a comment
+*/
+th {
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.ui-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.value::before {
+    content: '$';
+}
