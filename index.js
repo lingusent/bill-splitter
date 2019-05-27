@@ -51,3 +51,17 @@ newReceiptItemButton.addEventListener('click', (e) => {
     const receiptItemRow = createReceiptItemRowNode(descriptionNode.value, parseFloat(amountNode.value));
     receiptBody.insertBefore(receiptItemRow, newItemRow);
 });
+
+function calcTaxAmount(subtotal, taxrate) {
+    let taxAmount = (Math.round( (subtotal * taxrate) * 100 ) / 100).toFixed(2);
+    
+    let taxAmountUnrounded = subtotal * taxrate;
+    console.log("Subtotal: " + subtotal);
+    console.log("Tax Rate: " + taxrate);
+    console.log("Tax Amount(Unrounded): " + taxAmountUnrounded);
+    console.log("Tax Amount(Rounded): " + taxAmount);
+
+    return taxAmount;
+}
+
+console.log(calcTaxAmount(14.00, 0.0925));
