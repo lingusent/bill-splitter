@@ -9,40 +9,44 @@
     <body>
         <div class="ui-container">
             <table class="receipt">
-                <tr>
-                    <th>Receipt</th>
-                </tr>
-                <tr class="receipt_item">
-                    <td>
-                        <input class="receipt_item-description" type="text" />
-                        <input class="receipt_item-amount" type="number" step="0.01" min="0.00"/>
-                        <button class="receipt_item-add_button">+</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="receipt_subtotal-label">Subtotal:</span>
-                        <span class="value receipt_subtotal-value"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="receipt_tax-label">Tax:</span>
-                        <span class="value receipt_tax-value"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="receipt_tip-label">Tip:</span>
-                        <span class="value receipt_tip-value"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="receipt_total-label">Total:</span>
-                        <span class="value receipt_total-value"></span>
-                    </td>
-                </tr>
+                <thead class="receipt_head">
+                    <tr>
+                        <th>Receipt</th>
+                    </tr>
+                </thead>
+                <tbody class="receipt_body">
+                    <tr class="receipt_new-item-row">
+                        <td class="receipt_new-item">
+                            <input class="receipt_new-item-description" type="text" />
+                            <input class="receipt_new-item-amount" type="number" step="0.01" min="0.00"/>
+                            <button class="receipt_new-item-add_button">+</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="receipt_subtotal-label">Subtotal:</span>
+                            <span class="value receipt_subtotal-value"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="receipt_tax-label">Tax:</span>
+                            <span class="value receipt_tax-value"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="receipt_tip-label">Tip:</span>
+                            <span class="value receipt_tip-value"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="receipt_total-label">Total:</span>
+                            <span class="value receipt_total-value"></span>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
             <table class="guests">
                 <tr>

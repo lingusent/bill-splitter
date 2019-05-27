@@ -25,3 +25,29 @@ Calculations:
 - Guest tip
 - Guest total
 */
+
+const receiptBody = document.querySelector('.receipt_body');
+const newItemRow = document.querySelector('.receipt_new-item-row');
+const descriptionNode = newItemRow.querySelector('.receipt_new-item-description');
+const amountNode = newItemRow.querySelector('.receipt_new-item-amount');
+
+function createReceiptItemRowNode(description, amount) {
+    const newRow = document.createElement('tr');
+    
+    const descriptionCell = document.createElement('td');
+    descriptionCell.innerText = description;
+    newRow.append(descriptionCell);
+    
+    const amountCell = document.createElement('td');
+    amountCell.innerText = amount.toFixed(2);
+    amountCell.className += " value";
+    newRow.append(amountCell);
+
+    return newRow;
+}
+
+let newReceiptItemButton = document.querySelector('.receipt_new-item-add_button');
+newReceiptItemButton.addEventListener('click', (e) => {
+    const receiptItemRow = createReceiptItemRowNode(descriptionNode.value, parseFloat(amountNode.value));
+    receiptBody.insertBefore(receiptItemRow, newItemRow);
+});
