@@ -46,8 +46,8 @@ let receiptTipAmount = 0;
 let receiptTaxRate = 0.0925;
 let receiptTipRate = 0.20;
 
-receiptTaxRateInput.value = receiptTaxRate;
-receiptTipRateInput.value = receiptTipRate;
+receiptTaxRateInput.value = receiptTaxRate * 100;
+receiptTipRateInput.value = receiptTipRate * 100;
 
 function createReceiptItemRowNode(description, amount) {
     const newRow = document.createElement('tr');
@@ -76,12 +76,12 @@ newReceiptItemButton.addEventListener('click', (e) => {
 });
 
 receiptTaxRateInput.addEventListener('input', (e) => {
-    receiptTaxRate = receiptTaxRateInput.value;
+    receiptTaxRate = receiptTaxRateInput.value / 100;
     calcTotals();
 });
 
 receiptTipRateInput.addEventListener('input', (e) => {
-    receiptTipRate = receiptTipRateInput.value;
+    receiptTipRate = receiptTipRateInput.value / 100;
     calcTotals();
 });
 
