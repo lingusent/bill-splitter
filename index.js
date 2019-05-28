@@ -49,6 +49,9 @@ let receiptTipRate = 0.20;
 receiptTaxRateInput.value = receiptTaxRate * 100;
 receiptTipRateInput.value = receiptTipRate * 100;
 
+let receiptItems = {};
+let lastReceiptItemId = 0; 
+
 function createReceiptItemRowNode(description, amount) {
     const newRow = document.createElement('tr');
     
@@ -66,10 +69,20 @@ function createReceiptItemRowNode(description, amount) {
 
 let newReceiptItemButton = document.querySelector('.receipt_new-item-add_button');
 newReceiptItemButton.addEventListener('click', (e) => {
-    const receiptItemRow = createReceiptItemRowNode(descriptionNode.value, parseFloat(amountNode.value));
+    lastReceiptItemId++; 
+
+    receiptItems[lastReceiptItemId] = {
+        description: descriptionNode.value, 
+        cost: parseFloat(amountNode.value), 
+        guestIds: [] 
+    };
+
+    const receiptItemRow = createReceiptItemRowNode(receiptItems[lastReceiptItemId].description, receiptItems[lastReceiptItemId].cost);
     receiptBody.insertBefore(receiptItemRow, newItemRow);
 
-    receiptSubtotal = receiptSubtotal + parseFloat(amountNode.value);
+    console.log(receiptItems[lastReceiptItemId].description + ": " + receiptItems[lastReceiptItemId].cost);
+    
+    receiptSubtotal = receiptSubtotal + receiptItems[lastReceiptItemId].cost;
     receiptSubtotalValue.innerText = receiptSubtotal.toFixed(2);
 
     calcTotals();
