@@ -31,6 +31,8 @@ const newItemRow = document.querySelector('.receipt_new-item-row');
 const descriptionNode = newItemRow.querySelector('.receipt_new-item-description');
 const amountNode = newItemRow.querySelector('.receipt_new-item-amount');
 
+
+
 function createReceiptItemRowNode(description, amount) {
     const newRow = document.createElement('tr');
     
@@ -53,7 +55,7 @@ newReceiptItemButton.addEventListener('click', (e) => {
 });
 
 function calcTaxAmount(subtotal, taxrate) {
-    let taxAmount = (Math.round( (subtotal * taxrate) * 100 ) / 100).toFixed(2);
+    let taxAmount = roundCurrency(subtotal * taxrate);
     
     let taxAmountUnrounded = subtotal * taxrate;
     
@@ -67,8 +69,8 @@ function calcTaxAmount(subtotal, taxrate) {
 }
 
 function calcTipAmount(subtotal, taxAmount, tiprate) {
-    let tipSubtotal = parseFloat(subtotal) + parseFloat(taxAmount);
-    let tipAmount = (Math.round( (tipSubtotal * tiprate) * 100 ) / 100).toFixed(2);
+    let tipSubtotal = subtotal + taxAmount;
+    let tipAmount = roundCurrency(tipSubtotal * tiprate);
     console.log("");
     console.log("Tip Calculation");
     console.log("Tip Subtotal: " + tipSubtotal);
@@ -76,6 +78,12 @@ function calcTipAmount(subtotal, taxAmount, tiprate) {
     console.log("Tip Amount: " + tipAmount);
 
     return tipAmount;
+}
+
+function roundCurrency(amount) {
+    let roundAmount = parseFloat((Math.round(amount * 100) / 100).toFixed(2));
+
+    return roundAmount;
 }
 
 
