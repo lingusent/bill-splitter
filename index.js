@@ -31,6 +31,8 @@ const newItemRow = document.querySelector('.receipt_new-item-row');
 const descriptionNode = newItemRow.querySelector('.receipt_new-item-description');
 const amountNode = newItemRow.querySelector('.receipt_new-item-amount');
 
+const guestsBody = document.querySelector('.guests_body');
+
 const receiptSubtotalValue = document.querySelector('.receipt_subtotal-value');
 const receiptTaxValue = document.querySelector('.receipt_tax-value');
 const receiptTipValue = document.querySelector('.receipt_tip-value');
@@ -67,6 +69,19 @@ function createReceiptItemRowNode(description, amount) {
     return newRow;
 }
 
+function createGuestsRowNode() {
+    const newRow = document.createElement('tr');
+    
+    const newCell = document.createElement('td');
+    newRow.append(newCell);
+
+    const checkBox = document.createElement("INPUT");
+    checkBox.setAttribute("type", "checkbox");
+    newCell.append(checkBox);
+        
+    return newRow;
+}
+
 let newReceiptItemButton = document.querySelector('.receipt_new-item-add_button');
 newReceiptItemButton.addEventListener('click', (e) => {
     lastReceiptItemId++; 
@@ -79,13 +94,15 @@ newReceiptItemButton.addEventListener('click', (e) => {
 
     const receiptItemRow = createReceiptItemRowNode(receiptItems[lastReceiptItemId].description, receiptItems[lastReceiptItemId].cost);
     receiptBody.insertBefore(receiptItemRow, newItemRow);
-
-    console.log(receiptItems[lastReceiptItemId].description + ": " + receiptItems[lastReceiptItemId].cost);
+    
+    //console.log(receiptItems[lastReceiptItemId].description + ": " + receiptItems[lastReceiptItemId].cost);
     
     receiptSubtotal = receiptSubtotal + receiptItems[lastReceiptItemId].cost;
     receiptSubtotalValue.innerText = receiptSubtotal.toFixed(2);
 
     calcTotals();
+    
+    guestsBody.append(createGuestsRowNode());
 });
 
 receiptTaxRateInput.addEventListener('input', (e) => {
