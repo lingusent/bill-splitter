@@ -56,6 +56,8 @@ function calcTaxAmount(subtotal, taxrate) {
     let taxAmount = (Math.round( (subtotal * taxrate) * 100 ) / 100).toFixed(2);
     
     let taxAmountUnrounded = subtotal * taxrate;
+    
+    console.log("Tax Calculation");
     console.log("Subtotal: " + subtotal);
     console.log("Tax Rate: " + taxrate);
     console.log("Tax Amount(Unrounded): " + taxAmountUnrounded);
@@ -64,4 +66,22 @@ function calcTaxAmount(subtotal, taxrate) {
     return taxAmount;
 }
 
-console.log(calcTaxAmount(14.00, 0.0925));
+function calcTipAmount(subtotal, taxAmount, tiprate) {
+    let tipSubtotal = parseFloat(subtotal) + parseFloat(taxAmount);
+    let tipAmount = (Math.round( (tipSubtotal * tiprate) * 100 ) / 100).toFixed(2);
+    console.log("");
+    console.log("Tip Calculation");
+    console.log("Tip Subtotal: " + tipSubtotal);
+    console.log("Tip Rate: " + tiprate);
+    console.log("Tip Amount: " + tipAmount);
+
+    return tipAmount;
+}
+
+
+let receiptSubtotal = 100;
+let receiptTaxRate = 0.0925;
+let receiptTipRate = 0.20;
+
+let receiptTaxAmount = calcTaxAmount(receiptSubtotal, receiptTaxRate);
+calcTipAmount(receiptSubtotal, receiptTaxAmount, receiptTipRate);
