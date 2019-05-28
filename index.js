@@ -31,7 +31,23 @@ const newItemRow = document.querySelector('.receipt_new-item-row');
 const descriptionNode = newItemRow.querySelector('.receipt_new-item-description');
 const amountNode = newItemRow.querySelector('.receipt_new-item-amount');
 
+const receiptSubtotalValue = document.querySelector('.receipt_subtotal-value');
+const receiptTaxValue = document.querySelector('.receipt_tax-value');
+const receiptTipValue = document.querySelector('.receipt_tip-value');
+const receiptTotalValue = document.querySelector('.receipt_total-value');
 
+const receiptTaxRateInput = document.querySelector('.receipt_tax-rate');
+const receiptTipRateInput = document.querySelector('.receipt_tip-rate');
+
+let receiptSubtotal = 0;
+let receiptTaxAmount = 0;
+let receiptTipAmount = 0;
+
+let receiptTaxRate = 0.0925;
+let receiptTipRate = 0.20;
+
+receiptTaxRateInput.value = receiptTaxRate;
+receiptTipRateInput.value = receiptTipRate;
 
 function createReceiptItemRowNode(description, amount) {
     const newRow = document.createElement('tr');
@@ -52,44 +68,41 @@ let newReceiptItemButton = document.querySelector('.receipt_new-item-add_button'
 newReceiptItemButton.addEventListener('click', (e) => {
     const receiptItemRow = createReceiptItemRowNode(descriptionNode.value, parseFloat(amountNode.value));
     receiptBody.insertBefore(receiptItemRow, newItemRow);
+
+    receiptSubtotal = receiptSubtotal + parseFloat(amountNode.value);
+    receiptSubtotalValue.innerText = receiptSubtotal.toFixed(2);
+
+    calcTotals();
 });
 
-function calcTaxAmount(subtotal, taxrate) {
-    let taxAmount = roundCurrency(subtotal * taxrate);
-    
-    let taxAmountUnrounded = subtotal * taxrate;
-    
-    console.log("Tax Calculation");
-    console.log("Subtotal: " + subtotal);
-    console.log("Tax Rate: " + taxrate);
-    console.log("Tax Amount(Unrounded): " + taxAmountUnrounded);
-    console.log("Tax Amount(Rounded): " + taxAmount);
+receiptTaxRateInput.addEventListener('input', (e) => {
+    receiptTaxRate = receiptTaxRateInput.value;
+    calcTotals();
+});
 
-    return taxAmount;
+receiptTipRateInput.addEventListener('input', (e) => {
+    receiptTipRate = receiptTipRateInput.value;
+    calcTotals();
+});
+
+function calcTotals() {
+    receiptTaxAmount = calcTaxAmount(receiptSubtotal, receiptTaxRate);
+    receiptTaxValue.innerText = receiptTaxAmount.toFixed(2);
+
+    receiptTipAmount = calcTipAmount(receiptSubtotal, receiptTaxAmount, receiptTipRate);
+    receiptTipValue.innerText = receiptTipAmount.toFixed(2);
+
+    receiptTotalValue.innerText = (receiptSubtotal + receiptTaxAmount + receiptTipAmount).toFixed(2);
+}
+
+function calcTaxAmount(subtotal, taxrate) {
+    return formatNumberForCurrency(subtotal * taxrate);
 }
 
 function calcTipAmount(subtotal, taxAmount, tiprate) {
-    let tipSubtotal = subtotal + taxAmount;
-    let tipAmount = roundCurrency(tipSubtotal * tiprate);
-    console.log("");
-    console.log("Tip Calculation");
-    console.log("Tip Subtotal: " + tipSubtotal);
-    console.log("Tip Rate: " + tiprate);
-    console.log("Tip Amount: " + tipAmount);
-
-    return tipAmount;
+    return formatNumberForCurrency((subtotal + taxAmount) * tiprate);
 }
 
-function roundCurrency(amount) {
-    let roundAmount = parseFloat((Math.round(amount * 100) / 100).toFixed(2));
-
-    return roundAmount;
+function formatNumberForCurrency(amount) {
+    return Math.round(amount * 100) / 100;
 }
-
-
-let receiptSubtotal = 100;
-let receiptTaxRate = 0.0925;
-let receiptTipRate = 0.20;
-
-let receiptTaxAmount = calcTaxAmount(receiptSubtotal, receiptTaxRate);
-calcTipAmount(receiptSubtotal, receiptTaxAmount, receiptTipRate);
