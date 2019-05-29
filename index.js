@@ -64,7 +64,7 @@ const guest1TotalValue = document.querySelector('.guest1_total-value');
 let guest1Subtotal = 0;
 let guest1TaxAmount = 0;
 let guest1TipAmount = 0;
-
+let guestId = 1;
 
 function createReceiptItemRowNode(description, amount) {
     const newRow = document.createElement('tr');
@@ -131,6 +131,7 @@ receiptTipRateInput.addEventListener('input', (e) => {
     calcTotals();
 });
 
+
 let guestsCheckbox = document.querySelector('.guests_body');
 guestsCheckbox.addEventListener('click', (e) => {
     if (e.target.type == "checkbox") {
@@ -153,6 +154,37 @@ guestsCheckbox.addEventListener('click', (e) => {
         }
     } 
 });
+
+let newGuestButton = document.querySelector('.guests_add-button');
+newGuestButton.addEventListener('click', (e) => {  
+    guestId++;
+
+    const guestsAddButtonCell = document.querySelector('.guests_add-button-cell');
+
+    const guestsNameRow = document.querySelector('.guests_name-row');
+    const newGuestNameCell = document.createElement('td');
+    const newGuestNameInput = document.createElement('INPUT');
+    newGuestNameInput.setAttribute("type", "text");
+    newGuestNameInput.setAttribute("class", "guest" + guestId + "_name-input");
+    newGuestNameCell.append(newGuestNameInput);
+    guestsNameRow.insertBefore(newGuestNameCell, guestsAddButtonCell);
+
+    createGuestTotalRows("subtotal");
+    createGuestTotalRows("tax");
+    createGuestTotalRows("tip");
+    createGuestTotalRows("total");
+
+});
+
+function createGuestTotalRows(type) {
+    const guestsRow = document.querySelector('.guests_' + type + '-row');
+    const newGuestCell = document.createElement('td');
+    const newGuestValue = document.createElement('span');
+    newGuestValue.setAttribute("class", "value guest" + guestId + "_" + type + "-value");
+    newGuestValue.innerText = "0.00";
+    newGuestCell.append(newGuestValue);
+    guestsRow.append(newGuestCell);
+}
 
 function calcTotals() {
     receiptTaxAmount = calcTaxAmount(receiptSubtotal, receiptTaxRate);
