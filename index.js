@@ -92,11 +92,12 @@ function createGuestsRowNode(itemId, guestId) {
     
         newRow.append(newCell);
 
-        const checkBox = document.createElement("INPUT");
+        const checkBox = document.createElement("input");
         checkBox.setAttribute("type", "checkbox");
-        checkBox.className += "guests-checkbox";
+        checkBox.className += " guests-checkbox";
         
-        checkBox.id += "g" + step + "i" + itemId;
+        checkBox.setAttribute("data-guest_id", step);
+        checkBox.setAttribute("data-item_id", itemId);
         newCell.append(checkBox);
     }
 
@@ -106,14 +107,22 @@ function createGuestsRowNode(itemId, guestId) {
 let newReceiptItemButton = document.querySelector('.receipt_new-item-add_button');
 newReceiptItemButton.addEventListener('click', (e) => {
     lastReceiptItemId++; 
-
-    receiptItems[lastReceiptItemId] = {
-        description: descriptionNode.value, 
-        cost: parseFloat(amountNode.value), 
+    
+    let newReceiptItem = {
+        description: descriptionNode.value,
+        cost: 0,
         guestIds: [] 
     };
 
-    const receiptItemRow = createReceiptItemRowNode(receiptItems[lastReceiptItemId].description, receiptItems[lastReceiptItemId].cost);
+    if (amountNode.value == '') {
+        newReceiptItem['cost'] = 0;
+    } else {
+        newReceiptItem['cost'] = parseFloat(amountNode.value);
+    }
+
+    receiptItems[lastReceiptItemId] = newReceiptItem;
+
+    const receiptItemRow = createReceiptItemRowNode(newReceiptItem.description, newReceiptItem.cost);
     receiptBody.insertBefore(receiptItemRow, newItemRow);
     
     //console.log(receiptItems[lastReceiptItemId].description + ": " + receiptItems[lastReceiptItemId].cost);
@@ -142,19 +151,19 @@ let guestsCheckbox = document.querySelector('.guests_body');
 guestsCheckbox.addEventListener('click', (e) => {
     if (e.target.type == "checkbox") {
         
-        //console.log(e.target);
+        // console.log(e.target);
         //console.log(e.target.type);
         if (e.target.checked) {
             //console.log("Checkbox id:" + e.target.id + " checked.");
 
-            guest1Subtotal = guest1Subtotal + receiptItems[e.target.id].cost;
+            guest1Subtotal = guest1Subtotal + receiptItems[e.target.dataset.item_id].cost;
             guest1SubtotalValue.innerText = guest1Subtotal.toFixed(2);
             calcGuest1Totals()
             
         } else {
             //console.log("Checkbox id:" + e.target.id + " unchecked.");
 
-            guest1Subtotal = guest1Subtotal - receiptItems[e.target.id].cost;
+            guest1Subtotal = guest1Subtotal - receiptItems[e.target.dataset.item_id].cost;
             guest1SubtotalValue.innerText = guest1Subtotal.toFixed(2);
             calcGuest1Totals()
         }
@@ -169,20 +178,20 @@ newGuestButton.addEventListener('click', (e) => {
 
     const guestsNameRow = document.querySelector('.guests_name-row');
     const newGuestNameCell = document.createElement('td');
-    const newGuestNameInput = document.createElement('INPUT');
+    const newGuestNameInput = document.createElement('input');
     newGuestNameInput.setAttribute("type", "text");
     newGuestNameInput.setAttribute("class", "guest" + lastGuestId + "_name-input");
     newGuestNameCell.append(newGuestNameInput);
     guestsNameRow.insertBefore(newGuestNameCell, guestsAddButtonCell);
 
-    createGuestTotalRows("subtotal");
-    createGuestTotalRows("tax");
-    createGuestTotalRows("tip");
-    createGuestTotalRows("total");
+    createGuestTotalCell("subtotal");
+    createGuestTotalCell("tax");
+    createGuestTotalCell("tip");
+    createGuestTotalCell("total");
 
 });
 
-function createGuestTotalRows(type) {
+function createGuestTotalCell(type) {
     const guestsRow = document.querySelector('.guests_' + type + '-row');
     const newGuestCell = document.createElement('td');
     const newGuestValue = document.createElement('span');
