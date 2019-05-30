@@ -13,6 +13,9 @@ Actions:
 - Removing a guest from a receipt item
 - Set a tax rate
 - Set a tip rate
+- Edit receipt item name
+- Edit receipt item amount
+- Edit guest name
 
 Calculations:
 - Receipt subtotal
@@ -64,7 +67,7 @@ const guest1TotalValue = document.querySelector('.guest1_total-value');
 let guest1Subtotal = 0;
 let guest1TaxAmount = 0;
 let guest1TipAmount = 0;
-let guestId = 1;
+let lastGuestId = 1;
 
 function createReceiptItemRowNode(description, amount) {
     const newRow = document.createElement('tr');
@@ -81,19 +84,22 @@ function createReceiptItemRowNode(description, amount) {
     return newRow;
 }
 
-function createGuestsRowNode(itemId) {
+function createGuestsRowNode(itemId, guestId) {
     const newRow = document.createElement('tr');
     
-    const newCell = document.createElement('td');
+    for (step = 1; step <= guestId; step++) {
+        const newCell = document.createElement('td');
     
-    newRow.append(newCell);
+        newRow.append(newCell);
 
-    const checkBox = document.createElement("INPUT");
-    checkBox.setAttribute("type", "checkbox");
-    checkBox.id += itemId;
-    checkBox.className += "guests-checkbox";
-    newCell.append(checkBox);
+        const checkBox = document.createElement("INPUT");
+        checkBox.setAttribute("type", "checkbox");
+        checkBox.className += "guests-checkbox";
         
+        checkBox.id += "g" + step + "i" + itemId;
+        newCell.append(checkBox);
+    }
+
     return newRow;
 }
 
@@ -117,7 +123,7 @@ newReceiptItemButton.addEventListener('click', (e) => {
 
     calcTotals();
     
-    guestsBody.insertBefore(createGuestsRowNode(lastReceiptItemId), guestsNewItemRow);
+    guestsBody.insertBefore(createGuestsRowNode(lastReceiptItemId, lastGuestId), guestsNewItemRow);
 
 });
 
@@ -157,7 +163,7 @@ guestsCheckbox.addEventListener('click', (e) => {
 
 let newGuestButton = document.querySelector('.guests_add-button');
 newGuestButton.addEventListener('click', (e) => {  
-    guestId++;
+    lastGuestId++;
 
     const guestsAddButtonCell = document.querySelector('.guests_add-button-cell');
 
@@ -165,7 +171,7 @@ newGuestButton.addEventListener('click', (e) => {
     const newGuestNameCell = document.createElement('td');
     const newGuestNameInput = document.createElement('INPUT');
     newGuestNameInput.setAttribute("type", "text");
-    newGuestNameInput.setAttribute("class", "guest" + guestId + "_name-input");
+    newGuestNameInput.setAttribute("class", "guest" + lastGuestId + "_name-input");
     newGuestNameCell.append(newGuestNameInput);
     guestsNameRow.insertBefore(newGuestNameCell, guestsAddButtonCell);
 
@@ -180,7 +186,7 @@ function createGuestTotalRows(type) {
     const guestsRow = document.querySelector('.guests_' + type + '-row');
     const newGuestCell = document.createElement('td');
     const newGuestValue = document.createElement('span');
-    newGuestValue.setAttribute("class", "value guest" + guestId + "_" + type + "-value");
+    newGuestValue.setAttribute("class", "value guest" + lastGuestId + "_" + type + "-value");
     newGuestValue.innerText = "0.00";
     newGuestCell.append(newGuestValue);
     guestsRow.append(newGuestCell);
